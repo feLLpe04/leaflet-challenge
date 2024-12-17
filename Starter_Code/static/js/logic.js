@@ -42,6 +42,35 @@ d3.json(geojsonURL).then(function(data) {
                              <p>Depth: ${feature.geometry.coordinates[2]} km</p>`);
         }
     }).addTo(myMap);
+
+// Tectonic Plates Layer - Paste Below Line 44
+const tectonicPlatesURL = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json";
+
+let tectonicPlates = L.layerGroup();
+
+ // Layer Control 
+ let baseMaps = {
+    "Street Map": L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+};
+
+let overlayMaps = {
+    "Earthquakes": myMap, // Use existing map layer
+    "Tectonic Plates": tectonicPlates
+};
+
+L.control.layers(baseMaps, overlayMaps, {
+    collapsed: false
+}).addTo(myMap);
+
+d3.json(tectonicPlatesURL).then(function(data) {
+    L.geoJson(data, {
+        color: "orange", // Color for the plate boundaries
+        weight: 2
+    }).addTo(tectonicPlates);
+});
+
+tectonicPlates.addTo(myMap);
+
 });
 
 // Function to determine marker color based on depth
@@ -56,7 +85,7 @@ function getColor(depth) {
 let legend = L.control({ position: "bottomright" });
 
 legend.onAdd = function() {
-    let div = L.DomUtil.create("div", "info legend");
+       let div = L.DomUtil.create("div", "info legend");
     const depths = [-10, 10, 30, 50, 70, 90]; // Depth intervals
     const colors = ["#33ff33", "#ccff33", "#ffcc00", "#ff6600", "#ff0000"];
 
