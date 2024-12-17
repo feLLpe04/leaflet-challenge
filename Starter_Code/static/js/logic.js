@@ -43,20 +43,24 @@ d3.json(geojsonURL).then(function(data) {
         }
     }).addTo(myMap);
 
-// Tectonic Plates Layer - Paste Below Line 44
+// Tectonic Plates Layer - URL for the tectonic plates data
 const tectonicPlatesURL = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json";
 
 let tectonicPlates = L.layerGroup();
 
  // Layer Control 
  let baseMaps = {
-    "Street Map": L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+    "Street Map": L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
+    "Satellite Map": L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png")
 };
 
 let overlayMaps = {
     "Earthquakes": myMap, // Use existing map layer
     "Tectonic Plates": tectonicPlates
 };
+
+// URL for the fault lines data
+const faultLinesURL = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json";
 
 L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
